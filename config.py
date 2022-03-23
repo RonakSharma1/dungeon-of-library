@@ -1,9 +1,10 @@
+import os
 # -----------DATABASE CONFIGURATIONS--------#
 
 database = dict(
     host_name = "library-dungeons.corn2n66y93y.eu-west-2.rds.amazonaws.com",
-    user_name = "ronak1997",
-    user_password = "abcd1234",
+    user_name = os.getenv('DATABASE_USERNAME'),
+    user_password = os.getenv('DATABASE_PASSWORD'),
     db_name = "library_practice"
 )
 # ----------------------------------------- #
