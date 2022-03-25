@@ -49,7 +49,7 @@ def get_from_database (query) :
             connection.close()
             print("MySQL connection is closed")
 
-def get_all_person_data():
+def get_all_user_data():
     list_of_person = get_from_database(config.database_query["display_person"])
     return list_of_person.set_index("PersonId")
 

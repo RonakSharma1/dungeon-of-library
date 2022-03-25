@@ -2,9 +2,9 @@ from flask import Flask
 from service import library_business
 app =  Flask(__name__)
 
-@app.route("/all_person")
-def get_person () :
-    list_of_people = library_business.get_all_person()
+@app.route("/all_user")
+def get_user () :
+    list_of_people = library_business.get_all_user()
     return list_of_people.to_html(header="true", table_id="table")
 
 @app.route("/all_book")
