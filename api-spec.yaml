@@ -1,0 +1,272 @@
+swagger: "2.0"
+info:
+  description: "This server manages the dungeons of library system. It gives you access to a list of users and books owned by the library."
+  version: "1.0.0"
+  title: "Dungeons of Library"
+basePath: "/library"
+tags:
+- name: "User"
+  description: "Information library has on a user"
+- name: "Book"
+  description: "Information library has on a book"
+
+schemes:
+- "http"
+paths:
+  /all_user:
+    get:
+      tags:
+      - "User"
+      summary: "Displays every user and their information who are members of dungeon library"
+      description: "Queries the database to display this information"
+      produces:
+      - "application/html"
+      responses:
+        "200":
+          description: "Successful pull from database"
+          schema:
+            $ref: "#/definitions/User"
+        "400":
+          description: "Invalid status value"
+    post:
+      tags:
+      - "User"
+      summary: "Add a new user to the dungeon library"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "user"
+        description: "User object to be added to the library"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        "405":
+          description: "Invalid input"
+
+  /all_book:
+    get:
+      tags:
+      - "Book"
+      summary: "Displays every book and its information in the library"
+      description: "Queries the database to display this information"
+      produces:
+      - "application/html"
+      responses:
+        "200":
+          description: "Successful pull from database"
+          schema:
+            $ref: "#/definitions/Book"
+        "400":
+          description: "Invalid status value"
+    post:
+      tags:
+      - "Book"
+      summary: "Add a new book to the dungeon library"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "book"
+        description: "book object to be added to the library"
+        required: true
+        schema:
+          $ref: "#/definitions/Book"
+      responses:
+        "405":
+          description: "Invalid input"
+   
+  /user/{userId}:
+    get:
+      tags:
+      - "User"
+      summary: "Find user by ID"
+      description: "Returns a single user"
+      produces:
+      - "application/html"
+      parameters:
+      - name: "userId"
+        in: "path"
+        description: "ID of user to return"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/User"
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "User not found"
+    put:
+      tags:
+      - "User"
+      summary: "Update an existing user"
+      consumes:
+      - "application/json"
+      parameters:
+      - name: "userId"
+        in: "path"
+        description: "ID of user that needs to be updated"
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "body"
+        name: "User"
+        description: "User to be updated in the library"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "User not found"
+    delete:
+      tags:
+      - "User"
+      summary: "Deletes a user"
+      parameters:
+      - name: "userId"
+        in: "path"
+        description: "User id to delete"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "User not found"
+
+  /book/{bookId}:
+    get:
+      tags:
+      - "Book"
+      summary: "Find book by ID"
+      description: "Returns a single book"
+      produces:
+      - "application/html"
+      parameters:
+      - name: "bookId"
+        in: "path"
+        description: "ID of book to return"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/Book"
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Book not found"
+    put:
+      tags:
+      - "Book"
+      summary: "Update an existing book"
+      consumes:
+      - "application/json"
+      parameters:
+      - name: "bookId"
+        in: "path"
+        description: "ID of book that needs to be updated"
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "body"
+        name: "Book"
+        description: "Book to be updated in the library"
+        required: true
+        schema:
+          $ref: "#/definitions/Book"
+      responses:
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Book not found"
+    delete:
+      tags:
+      - "Book"
+      summary: "Deletes a book"
+      parameters:
+      - name: "bookId"
+        in: "path"
+        description: "Book id to delete"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Book not found"
+definitions:
+  User:
+    type: "object"
+    properties:
+      userId:
+        type: "integer"
+        format: "int64"
+      age:
+        type: "string"
+      fullName:
+        type: "string"
+      weight:
+        type: "string"
+      dateOfBirth:
+        type: "string"
+        format: "date"
+      countryOfBirth:
+        type: "string"
+      email:
+        type: "string"
+      readingBdgt:
+        type: "integer"
+        format: "int64"
+      gender:
+        type: "string"
+        enum:
+        - "male"
+        - "female"
+        - "other"
+      married:
+        type: "boolean"
+  Book:
+    type: "object"
+    required:
+    - "bookId"
+    - "bookName"
+    - "price"
+    properties:
+      bookId:
+        type: "integer"
+        format: "int64"
+      bookName:
+        type: "string"
+      authorName:
+        type: "string"
+      genre:
+        type: "string"
+      price:
+        type: "integer"
+        format: "int64"
+      gender:
+        type: "string"
+      currentOwner:
+        type: "string"
+      dateOfIssue:
+        type: "string"
+        format: "date"
+externalDocs:
+  description: "Find out more about dungeons of library"
+  url: "https://github.com/RonakSharma1/dungeon-of-library"
