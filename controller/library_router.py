@@ -1,11 +1,26 @@
-from flask import Flask
+from flask import Flask, request, jsonify
+from model.user import UserSchema
 from service import library_business
+
 app =  Flask(__name__)
 
-@app.route("/all_user")
+@app.route("/all_user", methods=['GET', 'POST'])
 def get_user () :
-    list_of_people = library_business.get_all_user()
-    return list_of_people.to_html(header="true", table_id="table")
+    if request.method == 'GET':
+        list_of_people = library_business.get_all_user()
+        return list_of_people.to_html(header="true", table_id="table")
+    elif request.method == 'POST':
+        user = UserSchema().load(request.get_json())
+        library_business.add_user(user)
+
+        schema = UserSchema(only=("full_name", "birth_date"))
+        return schema.dump(user)
+    else:
+        return jsonify(
+            isError= True,
+            message= "Failure",
+            statusCode= 400,
+            data= "Invalid request type"), 400
 
 @app.route("/all_book")
 def get_book () :
