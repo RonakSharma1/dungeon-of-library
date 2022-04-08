@@ -1,21 +1,25 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import date
-from marshmallow import validate, fields
+from marshmallow import validate
 import marshmallow_dataclass
 
 @dataclass
 class User:
-    full_name: fields.String(required=True, validate=validate.Length(min=1)) 
-    age: fields.Integer(required=True, 
-                        validate=validate.Range(min=18, max=100),
-                        error_messages={"required": {"message": "You must be an adult but not too old", "code": 400}}
-                        )
-    weight: fields.Integer(load_default=70, dump_default=70)
-    birth_date: fields.Date(required=True)
-    birth_country: fields.String(required=True)
-    email: fields.String(required=True)
-    reading_budget: fields.Integer(required=True)
-    gender: fields.String(required=True, validate=validate.OneOf(["Male", "Female", "Other"]))
-    married: fields.Boolean(load_default=False, dump_default=False)
+    full_name: str = field(metadata=dict(required=True, 
+                                         validate=validate.Length(min=1))) 
+    age: int = field(metadata=dict(required=True, 
+                                   validate=validate.Range(min=18, max=100),
+                                   error_messages={"required": {"message": "You must be an adult but not too old", 
+                                                                "code": 400}}))
+    weight: float = field(metadata=dict(required = False, 
+                                      load_default=70))
+    birth_date: date = field(metadata=dict(required=True))
+    birth_country: str = field(metadata=dict(required=True))
+    email: str = field(metadata=dict(required=True))
+    reading_budget: float = field(metadata=dict(required=True))
+    gender: str = field(metadata=dict(required=True, 
+                                      validate=validate.OneOf(["Male", "Female", "Other"])))
+    married: bool = field(metadata=dict(required = False, 
+                                        load_default=False))
 
 UserSchema = marshmallow_dataclass.class_schema(User)
