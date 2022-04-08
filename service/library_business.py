@@ -10,3 +10,6 @@ def get_all_book() :
 def add_user(user_information):
     print(user_information.age, user_information.weight, user_information.birth_date)
     library_database.add_new_user(user_information)
+
+def add_book(book_information):
+    library_database.add_new_book(book_information)

@@ -4,6 +4,22 @@ from dataclasses import astuple
 import pandas as pd
 import config
 
+def get_all_user_data():
+    list_of_person = _get_from_database(config.database_query["display_user"])
+    return list_of_person.set_index("PersonId")
+
+def get_all_book_data():
+    list_of_book = _get_from_database(config.database_query["display_book"])
+    return list_of_book.set_index("BookId")
+
+def add_new_user(user_information):
+    user_information =astuple(user_information)
+    _insert_to_database(config.database_query["add_user"], user_information)
+
+def add_new_book(book_information):
+    book_information =astuple(book_information)
+    _insert_to_database(config.database_query["add_book"], book_information)
+
 def _create_connection(host_name, user_name, user_password, db_name):
     connection = None
     try:
@@ -54,15 +70,3 @@ def _get_from_database (query) :
         if connection.is_connected():
             connection.close()
             print("MySQL connection is closed")
-
-def get_all_user_data():
-    list_of_person = _get_from_database(config.database_query["display_user"])
-    return list_of_person.set_index("PersonId")
-
-def get_all_book_data():
-    list_of_book = _get_from_database(config.database_query["display_book"])
-    return list_of_book.set_index("BookId")
-
-def add_new_user(user_information):
-    user_information =astuple(user_information)
-    _insert_to_database(config.database_query["add_user"], user_information)
